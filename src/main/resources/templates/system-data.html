@@ -1,0 +1,277 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="favicon.ico" >
+<link rel="Shortcut Icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/css/style.css" />
+
+<title>数据字典</title>
+</head>
+<body onload="getUserInfo()">
+
+<header class="navbar-wrapper">
+	<div class="navbar navbar-fixed-top" style="height: 45px">
+		<div class="container-fluid cl">
+			<nav class="nav navbar-nav">
+				<div class="container-fluid cl" style="font-family:'NSimSun';font-size : x-large;font-weight: bold;font-style: italic;width: auto;">
+					<font color="#f0f8ff">&nbsp;商品秒杀系统</font>
+				</div>
+			</nav>
+			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+				<ul class="cl">
+					<li>欢迎</li>
+					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><label id="userName">admin</label> <i class="Hui-iconfont">&#xe6d5;</i></a>
+						<ul class="dropDown-menu menu radius box-shadow">
+							<li><a href="javascript:;" onClick="myLoginInfo()">个人信息</a></li>
+							<li><a href="#" onclick="changeUser()">切换账户</a></li>
+							<li><a href="#" onclick="closeWebPage()">退出</a></li>
+						</ul>
+					</li>
+					<li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger" id="infoCount">1</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
+					<li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
+						<ul class="dropDown-menu menu radius box-shadow">
+							<li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
+							<li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>
+							<li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
+							<li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
+							<li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
+							<li><a href="javascript:;" data-val="orange" title="橙色">橙色</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+
+
+<!--_menu 作为公共模版分离出去-->
+<aside class="Hui-aside">
+	<div class="menu_dropdown bk_2">
+		<dl id="menu-article">
+			<dt ><i class="Hui-iconfont">&#xe620;</i> 营销活动<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd id="itemactivity" style="display: none;">
+				<ul>
+					<li><a href="/item/qryItem" title="商品秒杀">商品秒杀</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-product">
+			<dt ><i class="Hui-iconfont">&#xe620;</i> 营销管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd id="itemmng" style="display: none;">
+				<ul>
+					<li><a href="/item/listItem" title="商品管理">商品管理</a></li>
+					<li><a href="/promo/listPromo" title="活动管理">活动管理</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-admin">
+			<dt ><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd id="rolemng" style="display: none;">
+				<ul>
+					<li><a href="/admin/admin-role" title="角色管理">角色管理</a></li>
+					<li><a href="/admin/admin-permission" title="权限管理">权限管理</a></li>
+					<li><a href="/admin/admin-list" title="管理员列表">管理员列表</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-system">
+			<dt ><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd id="systemmng" style="display: block;">
+				<ul>
+					<li><a href="/system/system-base" title="系统设置">系统设置</a></li>
+					<li><a href="/system/system-category" title="栏目管理">栏目管理</a></li>
+					<li><a href="/system/system-data" title="数据字典">数据字典</a></li>
+					<li><a href="/system/system-shielding" title="屏蔽词">屏蔽词</a></li>
+					<li><a href="/system/system-log" title="系统日志">系统日志</a></li>
+				</ul>
+			</dd>
+		</dl>
+	</div>
+</aside>
+<div class="dislpayArrow"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 数据字典 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c"> 字典名称（类别）:
+				<input type="text" class="input-text" id="catalog" name="catalog" style="width:150px">
+				状态: <span class="select-box inline">
+				<select class="select" id="state" name="state">
+					<option value="">=请选择=</option>
+					<option value="0">失效</option>
+					<option value="1">生效</option>
+				</select>
+				</span>
+				<button type="submit" class="btn btn-success radius" id="search" name="search"><i class="Hui-iconfont">&#xe665;</i>
+					搜字典
+				</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<span class="l">
+					<a href="javascript:;" onclick="data_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+					<a href="javascript:;" class="btn btn-primary radius" id="dict_add" name="" onclick="layer_show('新增字典','/dict/dictAdd','','500')"><i class="Hui-iconfont">&#xe600;</i> 添加字典</a>
+			    </span>
+				<span class="r">共有数据：<lable id="queryCount" style="font-weight: bold">0</lable> 条</span>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="" value=""></th>
+							<th width="80">ID</th>
+							<th width="80">类别</th>
+							<th width="105">值</th>
+							<th width="105">名称</th>
+							<th width="200">备注</th>
+							<th width="105">状态</th>
+							<th width="100">操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbody">
+					</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../static/h-ui/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../static/h-ui/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="../static/h-ui/static/h-ui.admin/js/H-ui.admin.page.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../static/h-ui/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="../static/common.js"></script>
+<script type="text/javascript">
+//定义全局商品数组信息
+var g_dictList = [];
+var loadPage = false;
+jQuery(document).ready(function () {
+	$("#search").on("click", function () {
+		var catalog = $("#catalog").val();
+		var options = $("#state option:selected");
+		var state = options.val();
+		$.ajax({
+			type: "POST",
+			contentType: "application/x-www-form-urlencoded",
+			url: "/dict/listCount",
+			data: {
+				"catalog": catalog,
+				"state": state
+			},
+			xhrFields: {withCredentials: true},
+			success: function (data) {
+				if (data.status == "success") {
+					$("#queryCount").html(data.data);
+					queryList(catalog, state);
+				} else {
+					alert("查询失败，原因为" + data.data.errMsg);
+				}
+			},
+			error: function (data) {
+				alert("查询失败，原因为" + data.responseText);
+			}
+		});
+	});
+});
+
+function queryList(catalog, state) {
+	$.ajax({
+		type: "POST",
+		contentType: "application/x-www-form-urlencoded",
+		url: "/dict/list",
+		data: {
+			"catalog": catalog,
+			"state": state
+		},
+		xhrFields: {withCredentials: true},
+		success: function (data) {
+			if (data.status == "success") {
+				$("#tbody").html("");
+				g_dictList = data.data;
+				reloadDom();
+			} else {
+				alert("查询失败，原因为" + data.data.errMsg);
+			}
+		},
+		error: function (data) {
+			alert("查询失败，原因为" + data.responseText);
+		}
+	});
+}
+
+function reloadDom() {
+	for (var i = 0; i < g_dictList.length; i++) {
+		var dictVo = g_dictList[i];
+		var dom = "<tr class='text-c'><td><input type=\"checkbox\" value=\""+dictVo.id+"\" name=\"\"></td><td data-id='" + dictVo.id + "' id='dictDetail" + dictVo.id + "'>" + dictVo.id + "</td><td  data-id='" + dictVo.catalog + "'>" + dictVo.catalog + "</td><td data-id='" + dictVo.value + "'>" + dictVo.value + "</td><td>" + dictVo.name + "</td><td>" + dictVo.memo + "</td><td><span class='"+(dictVo.state=='生效'?'label label-success radius':'label label-default radius')+"'>"+ dictVo.state +"</span></td>" +
+				"<td class=\"td-manage\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"layer_show('编辑字典','/dict/dictAdd?id=" + dictVo.id + "&catalog=" + dictVo.catalog + "&value=" + dictVo.value + "','','510')\" class=\"ml-5\" style=\"text-decoration:none\">" +
+		"<i class=\"Hui-iconfont\">&#xe6df;</i></a> <a title=\"删除\" href=\"javascript:;\" onclick=\"dict_del("+dictVo.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td></tr>";
+		$("#tbody").append($(dom));
+		/*$("#dictDetail" + dictVo.id).on("click", function (e) {
+			layer_show("字典详情", 'getdict.html?id=" + $(this).data("id") + "&catalog=" + $(this).data("catalog") + "&value=" + $(this).data("value") + "', "600", "600");
+		});*/
+	}
+	if (!loadPage){
+		$('.table-sort').dataTable({
+			"bStateSave": true,//状态保存
+			"aoColumnDefs": [
+				//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+				{"orderable":false,"aTargets":[0,2,3,4,5,6,7]}// 制定列不参与排序
+			]
+		});
+		loadPage = true;
+	}
+}
+
+function data_del() {
+	var list = jQuery(".table tbody input[type=checkbox]:checked").map(function(){
+		return jQuery(this).val();
+	}).get().join(',');
+	dict_del(list);
+}
+
+/*数据字典-删除*/
+function dict_del(id){
+  layer.confirm('确认要删除吗？',function(index){
+	  $.ajax({
+		  type: "POST",
+		  contentType: "application/x-www-form-urlencoded",
+		  url: "/dict/delete",
+		  data: {
+			  "idList": id
+		  },
+		  xhrFields: {withCredentials: true},
+		  success: function (data) {
+			  if (data.status == "success") {
+				  layer.msg('已删除!', {icon: 1, time: 1000});
+				  $("#search").click();
+			  } else {
+				  alert("删除失败，原因为" + data.data.errMsg);
+			  }
+		  },
+		  error: function (data) {
+			  alert("删除失败，原因为" + data.responseText);
+		  }
+	  });
+  });
+}
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

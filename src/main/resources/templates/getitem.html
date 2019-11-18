@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="favicon.ico">
+    <link rel="Shortcut Icon" href="favicon.ico"/>
+
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/static/h-ui.admin/css/style.css"/>
+
+    <link href="../static/h-ui/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-article-show">
+    <table class="table">
+        <tbody>
+        <tr id="promoStartDateContainer">
+            <th class="text-r" width="120px"><label style="color:blue;" id="promoStatus" class="form-label"></label></th>
+            <td><label style="color:red;" id="promoStartDate" class="control-label"/></td>
+        </tr>
+        <tr>
+            <th class="text-r">商品名称：</th>
+            <td><label id="title" class="control-label"></label></td>
+        </tr>
+        <tr>
+            <th class="text-r">商品描述：</th>
+            <td><label id="description" class="control-label"/></td>
+        </tr>
+        <tr id="normalPriceContainer">
+            <th class="text-r">商品价格：</th>
+            <td><label id="price" class="control-label"/>元</td>
+        </tr>
+        <tr id="promoPriceContainer">
+            <th class="text-r">秒杀价格：</th>
+            <td><label style="color:red;" id="promoPrice" class="control-label"/>元</td>
+        </tr>
+        <tr>
+            <th class="text-r">商品图片：</th>
+            <td><img id="imgUrl" style="width: 200px;height: auto"/></td>
+        </tr>
+        <tr>
+            <th class="text-r">商品库存：</th>
+            <td><label id="stock" class="control-label"/></td>
+        </tr>
+        <tr>
+            <th class="text-r">商品销量：</th>
+            <td><label id="sales" class="control-label"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="orderOperation">
+        <div align="center">
+            <button id="createOrder" name="createOrder" class="btn btn-primary radius" type="submit">
+                下单&nbsp;
+            </button>
+        </div>
+    </div>
+    </form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../static/h-ui/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../static/h-ui/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="../static/h-ui/static/h-ui.admin/js/H-ui.admin.page.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+<script type="text/javascript" src="../static/h-ui/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/ueditor/1.4.3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript">
+    var g_itemVo = {};
+    jQuery(document).ready(function () {
+        //获取商品详情
+        $.ajax({
+            type: "GET",
+            url: "/item/get",
+            data: {
+                "id": getParam("id"),
+            },
+            xhrFields: {withCredentials: true},
+            success: function (data) {
+                if (data.status == "success") {
+                    g_itemVo = data.data;
+                    reloadDom();
+                    setInterval(reloadDom, 1000);
+                } else {
+                    alert("获取信息失败，原因为" + data.data.errMsg);
+                }
+            },
+            error: function (data) {
+                alert("获取信息失败，原因为" + data.responseText);
+            }
+        });
+        if (getParam("type") != null && getParam("type") != "" && getParam("type") == "order") {
+            document.getElementById("orderOperation").style.display = 'block';
+        } else {
+            document.getElementById("orderOperation").style.display = 'none';
+        }
+        $("#createOrder").on("click", function () {
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                url: "/order/createorder",
+                data: {
+                    "itemId": g_itemVo.id,
+                    "amount": 1,
+                    "promoId":g_itemVo.promoId
+                },
+                xhrFields: {withCredentials: true},
+                async: false,
+                success: function (data) {
+                    if (data.status == "success") {
+                        var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                        window.parent.location.reload();//刷新父页面
+                        parent.layer.close(index);//关闭弹出层
+                    } else {
+                        alert("下单失败，原因为" + data.data.errMsg);
+                        if (data.data.errCode == 20003) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            window.parent.location.href = "/login";//跳转登录页面
+                            parent.layer.close(index);
+                        }
+                    }
+                },
+                error: function (data) {
+                    alert("下单失败，原因为" + data.responseText);
+                }
+            });
+        });
+    });
+
+    function modalAlert() {
+        $.Huimodalalert('下单成功', 2000);
+    }
+
+    function reloadDom() {
+        $("#title").text(g_itemVo.title);
+        $("#description").text(g_itemVo.description);
+        $("#price").text(g_itemVo.price);
+        $("#imgUrl").attr("src", g_itemVo.imgUrl);
+        $("#stock").text(g_itemVo.stock);
+        $("#sales").text(g_itemVo.sales);
+        $("#promoPriceContainer").hide();
+        if (g_itemVo.promoStatus == 1){
+            //秒杀活动未开始
+            var startTime = g_itemVo.startDate.replace(new RegExp("-", "gm"), "/");
+            startTime = (new Date(startTime)).getTime();
+            var nowTime = Date.parse(new Date());
+            var delta = (startTime - nowTime)/1000;
+
+            if (delta <= 0){
+               //活动开始
+               g_itemVo.promoStatus = 2;
+               reloadDom();
+            }
+            $("#promoStartDate").text("秒杀活动将于"+g_itemVo.startDate+"开始售卖 倒计时："+delta+"秒");
+            $("#promoPrice").text(g_itemVo.promoPrice);
+
+            $("#createOrder").attr("disabled", true);
+            $("#promoPriceContainer").show();
+        }else if (g_itemVo.promoStatus == 2){
+            //秒杀活动进行中
+            $("#promoStartDate").text("秒杀正在进行中");
+            $("#promoPrice").text(g_itemVo.promoPrice);
+
+            $("#createOrder").attr("disabled", false);
+            $("#promoPriceContainer").show();
+            $("#normalPriceContainer").hide();
+        }
+    }
+
+    function getParam(name) {
+        var match = new RegExp(name +
+            "=*([^&]+)*", "i").exec(location.search);
+        if (match == null)
+            match = new RegExp(name + "=(.+)", "i").exec(location.search);
+        if (match == null) return null;
+        match = match + "";
+        var result = match.split(",");
+        return decodeURIComponent(result[1]);
+    }
+
+</script>
+</body>
+</html>
