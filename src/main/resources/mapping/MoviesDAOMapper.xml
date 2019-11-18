@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxy.seckill.seckillmanagement.dao.MoviesDAOMapper">
+
+  <resultMap id="BaseResultMap" type="com.xxy.seckill.seckillmanagement.dataobject.MoviesDAO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+  </resultMap>
+
+  <select id="moviesCount" parameterType="com.xxy.seckill.seckillmanagement.service.model.MoviesModel" resultType="integer">
+    select COUNT(*)
+    from movies
+    <where>
+      <include refid="condition"></include>
+    </where>
+  </select>
+
+  <select id="listMovies" parameterType="com.xxy.seckill.seckillmanagement.service.model.MoviesModel" resultMap="BaseResultMap">
+    select * from movies
+    <where>
+      <include refid="condition"></include>
+    </where>
+    LIMIT #{page}, #{pageSize}
+  </select>
+
+  <sql id="condition">
+    <if test="id != null and id!=''">
+      and id =#{id,jdbcType=INTEGER}
+    </if>
+    <if test="name != null and name != ''">
+      and name= #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="href != null and href !=''">
+      and href= #{href,jdbcType=VARCHAR}
+    </if>
+    <if test="image != null and image !=''">
+      and image= #{image,jdbcType=VARCHAR}
+    </if>
+    <if test="score != null and score !=''">
+      and score= #{score,jdbcType=VARCHAR}
+    </if>
+  </sql>
+</mapper>
