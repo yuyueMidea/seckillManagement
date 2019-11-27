@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxy.seckill.seckillmanagement.dao.BooklistDAOMapper">
+  <insert id="insert" parameterType="com.xxy.seckill.seckillmanagement.dataobject.BooklistDAO">
+    insert into booklist (key, id, name,
+      author, images, ratings, 
+      wordcount, type, serialize, 
+      like)
+    values (#{key,jdbcType=INTEGER}, #{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, #{ratings,jdbcType=VARCHAR}, 
+      #{wordcount,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{serialize,jdbcType=VARCHAR}, 
+      #{like,jdbcType=VARCHAR})
+  </insert>
+
+
+  <resultMap id="BaseResultMap" type="com.xxy.seckill.seckillmanagement.dataobject.BooklistDAO">
+    <id column="key" jdbcType="INTEGER" property="key" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="ratings" jdbcType="VARCHAR" property="ratings" />
+    <result column="wordcount" jdbcType="VARCHAR" property="wordcount" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="serialize" jdbcType="VARCHAR" property="serialize" />
+    <result column="like" jdbcType="VARCHAR" property="like" />
+  </resultMap>
+
+  <sql id="condition">
+    <if test="key != null and key!=''">
+      and key =#{key,jdbcType=INTEGER}
+    </if>
+    <if test="id != null and id!=''">
+      and id =#{id,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name!=''">
+      and name =#{name,jdbcType=VARCHAR}
+    </if>
+    <if test="author != null and author!=''">
+      and author =#{author,jdbcType=VARCHAR}
+    </if>
+    <if test="images != null and images!=''">
+      and images =#{images,jdbcType=VARCHAR}
+    </if>
+    <if test="ratings != null and ratings!=''">
+      and ratings =#{ratings,jdbcType=VARCHAR}
+    </if>
+    <if test="wordcount != null and wordcount!=''">
+      and wordcount =#{wordcount,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null and type!=''">
+      and type =#{type,jdbcType=VARCHAR}
+    </if>
+    <if test="serialize != null and serialize!=''">
+      and serialize =#{serialize,jdbcType=VARCHAR}
+    </if>
+    <if test="like != null and like!=''">
+      and like =#{like,jdbcType=VARCHAR}
+    </if>
+  </sql>
+
+  <select id="booklistCount" parameterType="com.xxy.seckill.seckillmanagement.service.model.BooklistModel" resultType="integer">
+    select COUNT(*) from booklist
+    <where>
+      <include refid="condition"></include>
+    </where>
+  </select>
+
+  <select id="listBooklist" parameterType="com.xxy.seckill.seckillmanagement.service.model.BooklistModel" resultMap="BaseResultMap">
+    select * from booklist
+    <where>
+      <include refid="condition"></include>
+    </where>
+    LIMIT #{page}, #{pageSize}
+  </select>
+
+</mapper>

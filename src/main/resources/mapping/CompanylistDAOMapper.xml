@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxy.seckill.seckillmanagement.dao.CompanylistDAOMapper">
+
+  <resultMap id="BaseResultMap" type="com.xxy.seckill.seckillmanagement.dataobject.CompanylistDAO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="registid" jdbcType="VARCHAR" property="registid" />
+    <result column="registtime" jdbcType="VARCHAR" property="registtime" />
+    <result column="artificial" jdbcType="VARCHAR" property="artificial" />
+    <result column="capital" jdbcType="VARCHAR" property="capital" />
+    <result column="creditcode" jdbcType="VARCHAR" property="creditcode" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+    <result column="intro" jdbcType="VARCHAR" property="intro" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, address, registid, registtime, artificial, capital, creditcode, website, intro
+  </sql>
+
+  <select id="companylistCount" parameterType="com.xxy.seckill.seckillmanagement.service.model.CompanylistModel" resultType="integer">
+    select COUNT(*)
+    from companylist
+    <where>
+      <include refid="condition"></include>
+    </where>
+  </select>
+
+  <select id="listCompanylist" parameterType="com.xxy.seckill.seckillmanagement.service.model.CompanylistModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from companylist
+    <where>
+      <include refid="condition"></include>
+    </where>
+    LIMIT #{page}, #{pageSize}
+  </select>
+
+  <sql id="condition">
+    <if test="id != null and id!=''">
+      and id =#{id,jdbcType=INTEGER}
+    </if>
+    <if test="code != null and code != ''">
+      and code= #{code,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name != ''">
+      and name= #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="address != null and address != ''">
+      and address= #{address,jdbcType=VARCHAR}
+    </if>
+    <if test="registid != null and registid != ''">
+      and registid= #{registid,jdbcType=VARCHAR}
+    </if>
+    <if test="registtime != null and registtime != ''">
+      and registtime= #{registtime,jdbcType=VARCHAR}
+    </if>
+    <if test="artificial != null and artificial != ''">
+      and artificial= #{artificial,jdbcType=VARCHAR}
+    </if>
+    <if test="capital != null and capital != ''">
+      and capital= #{capital,jdbcType=VARCHAR}
+    </if>
+    <if test="creditcode != null and creditcode != ''">
+      and creditcode= #{creditcode,jdbcType=VARCHAR}
+    </if>
+    <if test="website != null and website != ''">
+      and website= #{website,jdbcType=VARCHAR}
+    </if>
+    <if test="intro != null and intro != ''">
+      and intro= #{intro,jdbcType=VARCHAR}
+    </if>
+
+  </sql>
+
+</mapper>
