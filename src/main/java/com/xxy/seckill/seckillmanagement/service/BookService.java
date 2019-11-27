@@ -10,5 +10,5 @@ public interface BookService {
 
     List<BookModel> listBook(BookModel bookModel);
 //    列表查询数量
-    Integer bookCount(BookModel bookModel);
+//    Integer bookCount(BookModel bookModel);
 }
